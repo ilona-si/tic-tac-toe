@@ -4,8 +4,30 @@ import Square from "./square";
 import * as React from "react";
 
 class Board extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            squares: Array(9).fill(null)
+        }
+    }
+
+    handleClick = (i) => {
+        const xCount = this.state.squares.filter(v => v === 'X').length;
+        const oCount = this.state.squares.filter(v => v === 'O').length;
+        const squares = this.state.squares.slice();
+        if (squares[i] === null) {
+            squares[i] = xCount > oCount ? 'O' : 'X';
+            this.setState({
+                squares: squares
+            });
+        }
+    }
+
     renderSquare(i) {
-        return <Square value={i}/>;
+        return <Square
+            value={this.state.squares[i]}
+            onClick={() => this.handleClick(i)}
+        />;
     }
 
     render() {
