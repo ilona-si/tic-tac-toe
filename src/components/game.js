@@ -3,6 +3,8 @@ import Board from "./board";
 import "../styles/game.css"
 
 class Game extends React.Component {
+    winner = null;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -38,11 +40,12 @@ class Game extends React.Component {
     }
 
     render() {
-        const status = this.props.winner ?
-            ('Выиграл ' + this.props.winner) : ("Next player: " + (this.props.isXNext ? 'X' : 'O'));
         const history = this.state.history;
         let currentSquares = history[this.state.stepNumber].squares;
-        const winner = calculateWinner(currentSquares);
+        this.winner = calculateWinner(currentSquares);
+        const status = this.winner ?
+            ('Выиграл ' + this.winner) : ("Next player: " + (this.state.isXNext ? 'X' : 'O'));
+
         const moves = history.map((step, move) => {
             const desc = move ?
                 'Перейти к ходу #' + move :
@@ -57,7 +60,6 @@ class Game extends React.Component {
             <div className="game">
                 <div className="game-board">
                     <Board squares={currentSquares}
-                           winner={winner}
                            onClick={(i) => this.handleClick(i)}/>
                 </div>
 
